@@ -1,8 +1,8 @@
-input = open('input.txt')
-freq = 0
+with open('input.txt') as infile:
+    freq = 0
 
-for line in input.readlines():
-    val = int(line)
-    freq += val
+    for line in infile.readlines():
+        val = int(line)
+        freq += val
 
-print(freq)
+    print(freq)
