@@ -51,7 +51,8 @@ with open('input.txt') as infile:
             max_minute = minute
             max_freq = freq
 
-            print(guard, minute, freq)
+    # Alternative esoteric way of finding a guard
+    # print(max([(gid, max(enumerate(data), key=lambda e: e[1])) for gid, data in guards.items()], key=lambda guard: guard[1][1]))
 
     print(max_guard, max_minute)
     print(max_guard * max_minute)
