@@ -7,12 +7,10 @@ def manh(a, b):
 
 
 with open('input.txt') as infile:
-    points = [tuple(map(lambda s: int(s.strip()), line.split(','))) for line in infile.readlines()]
+    points = [tuple(map(int, line.split(','))) for line in infile.readlines()]
 
 max_x = max(points, key=operator.itemgetter(0))[0]
 max_y = max(points, key=operator.itemgetter(1))[1]
-min_x = min(points, key=operator.itemgetter(0))[0]
-min_y = min(points, key=operator.itemgetter(1))[1]
 
 field = [[-1] * (max_y+1) for _ in range(max_x+1)]
 
@@ -35,4 +33,4 @@ for row in field:
     result = {k: result.get(k, 0) + claims.get(k, 0) for k in merge}
 
 print('\n'.join([','.join(map(lambda cell: str(cell).rjust(2), row)) for row in field]))  # print field
-print(max(Counter(result).items(), key=operator.itemgetter(1)))
+print(max(result.items(), key=operator.itemgetter(1)))

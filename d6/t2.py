@@ -6,7 +6,7 @@ def manh(a, b):
 
 
 with open('input.txt') as infile:
-    points = [tuple(map(lambda s: int(s.strip()), line.split(','))) for line in infile.readlines()]
+    points = [tuple(map(int, line.split(','))) for line in infile.readlines()]
 
 thresh = 10000
 
