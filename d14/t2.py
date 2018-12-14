@@ -14,7 +14,7 @@ def solve(pattern):
 
     pat_len = 0
 
-    while pat_len != len(pattern):
+    while True:
         new_recipes = list(map(int, list(str(recipes[elf1] + recipes[elf2]))))
         recipes += new_recipes
 
@@ -24,14 +24,15 @@ def solve(pattern):
             else:
                 pat_len = 0
 
+            if pat_len == len(pattern):
+                return find_pattern(recipes, pattern)
+
         elf1 = (elf1 + recipes[elf1] + 1) % len(recipes)
         elf2 = (elf2 + recipes[elf2] + 1) % len(recipes)
 
-    return find_pattern(recipes, pattern)
 
-
-print(solve('51589'))
-print(solve('01245'))
-print(solve('92510'))
-print(solve('59414'))
+assert solve('51589') == 9
+assert solve('01245') == 5
+assert solve('92510') == 18
+assert solve('59414') == 2018
 print(solve('293801'))

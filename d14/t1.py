@@ -14,8 +14,8 @@ def solve(iterations):
     return ''.join(map(str, recipes[iterations:iterations+10]))
 
 
-print(solve(9))
-print(solve(5))
-print(solve(18))
-print(solve(2018))
+assert solve(9) == '5158916779'
+assert solve(5) == '0124515891'
+assert solve(18) == '9251071085'
+assert solve(2018) == '5941429882'
 print(solve(293801))
