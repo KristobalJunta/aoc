@@ -1,5 +1,4 @@
 import sys
-from itertools import product
 
 
 class Point:
@@ -44,15 +43,15 @@ def build_segments(wire):
 
     for item in wire:
         direction = item[0]
-        distance = int(item[1:])
+        dist = int(item[1:])
         if direction == "U":
-            new_point = point + Point(0, distance)
+            new_point = point + Point(0, dist)
         if direction == "D":
-            new_point = point + Point(0, -distance)
+            new_point = point + Point(0, -dist)
         if direction == "L":
-            new_point = point + Point(-distance, 0)
+            new_point = point + Point(-dist, 0)
         if direction == "R":
-            new_point = point + Point(distance, 0)
+            new_point = point + Point(dist, 0)
 
         wire_segments.append(Segment(point, new_point))
         point = new_point
@@ -92,16 +91,15 @@ for i, a in enumerate(segments[0]):
             steps = steps_a + steps_b
             intersections.append(Intersection(p, steps))
 
-answer = 999999999
-for intersection in intersections:
-    answer = min(answer, distance(Point(0, 0), intersection.point))
+answer = min(
+    distance(Point(0, 0), intersection.point)
+    for intersection in intersections
+)
 
 print("part 1")
 print(answer)
 
-answer = 999999999
-for intersection in intersections:
-    answer = min(answer, intersection.steps)
+answer = min(intersection.steps for intersection in intersections)
 
 print("part 2")
 print(answer)
