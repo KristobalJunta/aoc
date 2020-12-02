@@ -1,10 +1,10 @@
 import itertools
+import fileinput
 
 
 def get_input():
-    with open('2020/d01/input.txt') as f:
-        data = f.read()
-    data = [int(l) for l in data.splitlines()]
+    data = [l for l in fileinput.input()]
+    data = [int(l) for l in data]
     return data
 
 def part1(data):
