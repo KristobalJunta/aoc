@@ -6,7 +6,7 @@ __pycache__/
 
 config.ini
 
-env
 venv
-.env
-.venv
+
+aocdl:Zone.Identifier
+.aocdlconfig

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DAYDIR="$1/d$2"
+
+if [ ! -d $DAYDIR ]; then
+  ./bin/aocdl -year $1 -day $2
+  mkdir -p $DAYDIR
+  mv input.txt "$DAYDIR/input.txt"
+  cp solution.py.template "$DAYDIR/solution.py"
+fi
+
+echo "Got input for $1 day $2"
