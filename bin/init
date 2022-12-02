@@ -7,6 +7,7 @@ if [ ! -d $DAYDIR ]; then
   mkdir -p $DAYDIR
   mv input.txt "$DAYDIR/input.txt"
   cp solution.py.template "$DAYDIR/solution.py"
+  touch "$DAYDIR/test.txt"
 fi
 
 echo "Got input for $1 day $2"
