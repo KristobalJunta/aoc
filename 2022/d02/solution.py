@@ -23,41 +23,31 @@ CHAR_SHAPE = {
     'Z': Shape.SCISSORS,
 }
 
+PICKS_WIN = {
+    Shape.ROCK: Shape.PAPER,
+    Shape.PAPER: Shape.SCISSORS,
+    Shape.SCISSORS: Shape.ROCK,
+}
+
 
 def game_score(elf, me):
     if elf == me:
         return 3
-    else:
-        if (
-            elf == Shape.ROCK and me == Shape.PAPER
-            or elf == Shape.PAPER and me == Shape.SCISSORS
-            or elf == Shape.SCISSORS and me == Shape.ROCK
-        ):
-            return 6
-        else:
-            return 0
+    return 6 if me == PICKS_WIN[elf] else 0
 
 
 def part1(data):
     score = 0
 
     for line in data:
-        a, b = line.split()
-        elf = CHAR_SHAPE[a]
-        me = CHAR_SHAPE[b]
-
+        elf, me = [CHAR_SHAPE[x] for x in line.split()]
         score += game_score(elf, me) + me.value
 
     return score
 
 
 def part2(data):
-    picks_win = {
-        Shape.ROCK: Shape.PAPER,
-        Shape.PAPER: Shape.SCISSORS,
-        Shape.SCISSORS: Shape.ROCK,
-    }
-    picks_loose = {v: k for k, v in picks_win.items()}
+    picks_loose = {v: k for k, v in PICKS_WIN.items()}
 
     score = 0
 
@@ -70,7 +60,7 @@ def part2(data):
         elif outcome == 'Y':  # draw
             score += 3 + shape.value
         else:  # Z means win, ага да конєшно
-            score += 6 + picks_win[shape].value
+            score += 6 + PICKS_WIN[shape].value
 
     return score
 
