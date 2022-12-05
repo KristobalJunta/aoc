@@ -2,8 +2,8 @@ import fileinput
 
 
 def get_input():
-    data = [s.strip() for s in fileinput.input()]
-    data = list(filter(bool, data))
+    data = [s.removesuffix('\n') for s in fileinput.input()]
+    data = list(filter(None, data))
     return data
 
 
