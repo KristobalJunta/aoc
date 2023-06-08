@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import os
 import sys
-from configparser import ConfigParser
 from datetime import date
 from inspect import cleandoc
 from typing import List, Tuple
@@ -17,10 +16,8 @@ Else tries to get input for current date (works only in December).
 """
 
 input_url = "https://adventofcode.com/{}/day/{}/input"
-
-config = ConfigParser()
-assert os.path.isfile("config.ini"), "Create and fill config.ini file"
-config.read("config.ini")
+session_cookie = os.getenv("AOC_SESSION")
+assert session_cookie, "Set session cookie in environment variable AOC_SESSION"
 
 
 def get_year_day(args: List[str]) -> Tuple[str, str]:
@@ -52,13 +49,6 @@ def get_input(year: str, day: str, *, force: bool = False) -> str:
         with open(infile_path) as f:
             return f.read()
     else:
-        try:
-            session_cookie = config["aoc"]["session_cookie"]
-            assert session_cookie
-        except (AssertionError, KeyError):
-            print("set session cookie in config")
-            sys.exit(1)
-
         r = requests.get(input_url.format(year, day), cookies={"session": session_cookie})
         assert r.status_code == 200, "Failed to get input from website"
         with open(infile_path, "w") as f:

@@ -10,3 +10,5 @@ venv
 
 aocdl:Zone.Identifier
 .aocdlconfig
+
+.env

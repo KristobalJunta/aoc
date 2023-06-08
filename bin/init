@@ -1,9 +1,16 @@
 #!/bin/bash
 
+# Input fetched using aocdl
+# https://github.com/GreenLightning/advent-of-code-downloader
+# Session cookie taken from .env file or from env variable AOC_SESSION
+
+# Usage: bin/init [YEAR] [DAY]
+
+
 DAYDIR="$1/d$2"
 
 if [ ! -d $DAYDIR ]; then
-  ./bin/aocdl -year $1 -day $2
+  source ./.env && ./bin/aocdl -year $1 -day $2 -session-cookie $AOC_SESSION
   mkdir -p $DAYDIR
   mv input.txt "$DAYDIR/input.txt"
   cp solution.py.template "$DAYDIR/solution.py"
