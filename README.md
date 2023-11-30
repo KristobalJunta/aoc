@@ -15,11 +15,11 @@ My solutions for the annual [Advent of Code](https://adventofcode.com) puzzles.
 
 ## Getting input
 
-Soulutions structured by year and by day.  
+Soulutions are structured by year and by day.  
 Daily solution folder can be set up with `bin/init [YEAR] [DAY]` script.
 
 ## Badges
 
-README badges show status for each year stars.  
-Updating badges done via make  
-`make badges` hould be run in virtualenv.
+README badges show number of stars for each year.  
+Updating of badges is done via Make.  
+To do so run `make badges` in virtualenv.
