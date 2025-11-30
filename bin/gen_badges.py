@@ -11,6 +11,7 @@ import argparse
 import json
 import os
 import time
+from datetime import datetime
 
 import requests
 
@@ -96,7 +97,7 @@ if __name__ == "__main__":
         "--years",
         nargs="+",
         type=int,
-        default=list(range(2022, 2014, -1)),
+        default=list(range(datetime.now().year, 2014, -1)),
         help="Years to fetch data from.",
     )
     parser.add_argument(
