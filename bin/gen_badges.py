@@ -31,12 +31,12 @@ def interp(c0, c1, t):
     return rgb2hex(*[(1 - t) * x0[i] + t * x1[i] for i in range(3)])
 
 
-# cookie session (see browser tools)
+# value of the "session" cookie from adventofcode.com
 SID = os.getenv("AOC_SESSION")
-assert SID is not None
-
-# personal ID (see in AOC Settings)
+# personal ID ("user #..." in AOC Settings)
 UID = os.getenv("AOC_UID")
+
+assert SID is not None
 assert UID is not None
 
 AOC_URL = "https://adventofcode.com/{year}/leaderboard/private/view/{uid}.json"
@@ -51,7 +51,6 @@ def get_badge_urls():
     out = []
 
     for year in args.years:
-        # print(f"Fetch data for {year=}")
         res = requests.get(
             AOC_URL.format(year=year, uid=UID),
             headers=HEADERS,
@@ -79,10 +78,6 @@ def get_badge_urls():
     return out
 
 
-def main():
-    for url in get_badge_urls():
-        print(url)
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="""
@@ -103,7 +98,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--sleep-sec",
         type=int,
-        default=2,
+        default=1,
         help="Number of seconds to sleep between requests.",
     )
     parser.add_argument(
@@ -113,4 +108,5 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    main()
+    for url in get_badge_urls():
+        print(url)
