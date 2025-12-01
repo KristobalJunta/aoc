@@ -1,3 +1,6 @@
+# Advent of Code
+# Year Y, day X
+
 import fileinput
 
 
@@ -16,5 +19,8 @@ def part2(data):
 if __name__ == "__main__":
     indata = get_input()
 
+    print("--- Part One ---")
     print(part1(indata))
+
+    print("--- Part Two ---")
     print(part2(indata))
