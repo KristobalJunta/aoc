@@ -4,11 +4,14 @@
 __pycache__/
 *.pyc
 
-config.ini
-
 venv
 
 aocdl:Zone.Identifier
 .aocdlconfig
-
+config.ini
 .env
+
+# avoid publishing content of AoC
+input*
+test*
+puzzle*

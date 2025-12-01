@@ -4,10 +4,9 @@ This year's solution for AoC done in Python
 
 ## Notes
 
-- day 7: дерево отрезков
-- day 10: наивная реализация
-- day 11: возможно графы
-- day 12: графы, найти мощность компоненты
-- day 13: наивная реализация; возможно, математика, основанная на picosecondth, depth, range (мы всегда знаем, где будет сканер в определенный момент)
-- day 14: ???
-- day 15: наивная реализация
+- day 7: Segment Tree
+- day 10: Naive implementation
+- day 11: Possibly graphs
+- day 12: Graphs, find the size of the component (or find the cardinality of the component)
+- day 13: Naive implementation; possibly mathematics based on picosecondth, depth, range (we always know where the scanner will be at a certain moment)
+- day 15: Naive implementationзация

@@ -1,3 +1,6 @@
+# O(log n) solution:
+# https://www.reddit.com/r/adventofcode/comments/a2damm/2018_day2_part_2_a_linear_time_solution/eaxco3u/
+
 from collections import Counter
 
 with open('input.txt') as infile:
