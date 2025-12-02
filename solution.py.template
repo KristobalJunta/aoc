@@ -5,7 +5,8 @@ import fileinput
 
 
 def get_input():
-    return list(filter(None, (s.removesuffix('\n') for s in fileinput.input())))
+    data = list(filter(None, (s.removesuffix('\n') for s in fileinput.input())))
+    return data
 
 
 def part1(data):
