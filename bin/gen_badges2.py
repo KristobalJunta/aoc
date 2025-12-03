@@ -98,7 +98,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--sleep-sec",
         type=int,
-        default=2,
+        default=0.1,
         help="Number of seconds to sleep between requests.",
     )
     parser.add_argument(
