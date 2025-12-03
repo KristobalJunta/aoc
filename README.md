@@ -1,7 +1,7 @@
 # Advent of Code 🎄
 
 <!-- MDUP:BEG (RUN:./bin/gen_badges.py --link-to-dir) -->
-<a href="./2025"><img src="https://img.shields.io/badge/2025-4%20stars-df1a15"></img></a>
+<a href="./2025"><img src="https://img.shields.io/badge/2025-6%20stars-d71f16"></img></a>
 <a href="./2024"><img src="https://img.shields.io/badge/2024-4%20stars-df1a15"></img></a>
 <a href="./2023"><img src="https://img.shields.io/badge/2023-4%20stars-df1a15"></img></a>
 <a href="./2022"><img src="https://img.shields.io/badge/2022-12%20stars-be2f18"></img></a>
