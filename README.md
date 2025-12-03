@@ -1,6 +1,12 @@
-# Advent of Code 🎄
+# 🎄 Advent of Code 🎄
 
-<!-- MDUP:BEG (RUN:./bin/gen_badges.py --link-to-dir) -->
+<p align="center">
+<!-- MDUP:BEG ./bin/gen_badges2.py --total-only -->
+<a href="./README.md"><img src="https://img.shields.io/badge/total-283%20⭐-3e3e3e?style=for-the-badge"></img></a>
+<!-- MDUP:END -->
+</p>
+
+<!-- MDUP:BEG ./bin/gen_badges2.py --link-to-dir -->
 <a href="./2025"><img src="https://img.shields.io/badge/2025-6%20stars-d71f16"></img></a>
 <a href="./2024"><img src="https://img.shields.io/badge/2024-4%20stars-df1a15"></img></a>
 <a href="./2023"><img src="https://img.shields.io/badge/2023-4%20stars-df1a15"></img></a>

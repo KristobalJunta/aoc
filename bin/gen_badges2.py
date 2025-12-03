@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+
+"""
+Script to generate star count badges for README.md
+Fork of https://github.com/alexandru-dinu/programming-challenges/blob/main/advent-of-code/.scripts/gen_badges.py
+"""
+
+import argparse
+import colorsys
+import json
+import os
+import time
+
+import requests
+
+
+def rgb2hex(r, g, b):
+    f = lambda x: max(0, min(255, round(x * 255)))
+    return f"{f(r):02x}{f(g):02x}{f(b):02x}"
+
+
+def hsv_interp(t):
+    # 0 - 60 - 120
+    assert 0 <= t <= 1
+    return rgb2hex(*colorsys.hsv_to_rgb(h=t * 120 / 360, s=1, v=0.6))
+
+
+# cookie session (see browser tools)
+SID = os.getenv("AOC_SESSION")
+assert SID is not None
+
+# personal ID (see in AOC Settings)
+UID = os.getenv("AOC_UID")
+assert UID is not None
+
+USER_AGENT = "https://github.com/KristobalJunta/aoc/blob/master/bin/gen_badges.py"
+AOC_URL = "https://adventofcode.com/{year}/leaderboard/private/view/{uid}.json"
+STAR = "⭐"
+YEARS = list(range(2025, 2014, -1))
+NUM_YEARS = len(YEARS)
+
+
+def fmt_year_badge(year: int, stars: int, color: str) -> str:
+    return f"https://img.shields.io/badge/{year}-{stars}%20{STAR}-{color}?style=flat-square"
+
+
+def fmt_total_badge(stars: int, color: str) -> str:
+    return f"https://img.shields.io/badge/total-{stars}%20{STAR}-{color}?style=for-the-badge"
+
+
+def get_year_stars(year: int) -> int:
+    res = requests.get(
+        AOC_URL.format(year=year, uid=UID),
+        headers={"User-Agent": USER_AGENT},
+        cookies={"session": SID},
+    )
+    assert res.status_code == 200
+    time.sleep(args.sleep_sec)
+
+    data = json.loads(res.text)
+
+    return data["members"][UID]["stars"]
+
+
+def get_year_badge_url(year: int, stars: int) -> str:
+    total_stars = 50 if year < 2025 else 24
+    color = hsv_interp(stars / total_stars)
+
+    badge = f'<img src="{fmt_year_badge(year,stars, color)}"></img>'
+    if args.link_to_dir:
+        badge = f'<a href="./{year}">{badge}</a>'
+
+    return badge
+
+
+def get_total_badge_url(stars: int) -> str:
+    return f'<a href="./README.md"><img src="{fmt_total_badge(stars, "3e3e3e")}"></img></a>'
+
+
+def main():
+    y2s = {y: get_year_stars(y) for y in YEARS}
+
+    if args.total_only:
+        print(get_total_badge_url(sum(y2s.values())))
+    else:
+        for y, s in y2s.items():
+            print(get_year_badge_url(y, s))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="""
+        Generate badge URLs with stars/year.
+        The badge color is interpolated with respect to the number of stars: from 0 to 50.
+        """.strip(),
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+    )
+    parser.add_argument(
+        "--sleep-sec",
+        type=int,
+        default=2,
+        help="Number of seconds to sleep between requests.",
+    )
+    parser.add_argument(
+        "--link-to-dir",
+        action="store_true",
+        help="If given, will link the badge to the corresponding `./<year>` directory.",
+    )
+    parser.add_argument(
+        "--total-only",
+        action="store_true",
+        help="Just generate the total number of stars",
+    )
+    args = parser.parse_args()
+
+    main()

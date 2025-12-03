@@ -9,6 +9,7 @@ See https://www.reddit.com/r/adventofcode/comments/zcngfk/generate_readme_badges
 
 import argparse
 import json
+import math
 import os
 import time
 from datetime import datetime
@@ -40,10 +41,7 @@ assert SID is not None
 assert UID is not None
 
 AOC_URL = "https://adventofcode.com/{year}/leaderboard/private/view/{uid}.json"
-HEADERS = {
-    "User-Agent": "https://github.com/alexandru-dinu/advent-of-code/blob/main/.scripts/gen_badges.py"
-}
-COOKIES = {"session": SID}
+USER_AGENT = "https://github.com/KristobalJunta/aoc/blob/master/bin/gen_badges.py"
 MD_BADGE_URL = "https://img.shields.io/badge/{year}-{stars}%20stars-{color}"
 
 
@@ -53,8 +51,8 @@ def get_badge_urls():
     for year in args.years:
         res = requests.get(
             AOC_URL.format(year=year, uid=UID),
-            headers=HEADERS,
-            cookies=COOKIES,
+            headers={"User-Agent": USER_AGENT},
+            cookies={"session": SID},
         )
         assert res.status_code == 200
         time.sleep(args.sleep_sec)
@@ -63,8 +61,7 @@ def get_badge_urls():
 
         s = data["members"][UID]["stars"]
 
-        # t = sqrt(s / 50)  # sqrt(x) > x, for x in [0, 1], so we get to green faster
-        t = s / 50
+        t = math.sqrt(s / 50)  # sqrt(x) > x, for x in [0, 1], so we get to green faster
         color = interp(args.color0, args.color1, t)
 
         badge = (
