@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Update README
-        run: mdup -i README.md
+        run: mdup -i README.md && sed -i '' -e '/`/d' README.md
         env:
           AOC_SESSION: ${{ secrets.AOC_SESSION }}
           AOC_UID: ${{ secrets.AOC_UID }}
