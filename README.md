@@ -1,5 +1,6 @@
-# 🎄 Advent of Code 🎄
+<h1 align="center"> 🎄 Advent of Code </h1>
 
+<p align="center">
 <!--[[[cog
     import cog
     import bin.gen_badges as g
@@ -18,5 +19,6 @@
 <a href="./2016"><img src="https://img.shields.io/badge/2016-0%20⭐-990000?style=flat-square"></img></a>
 <a href="./2015"><img src="https://img.shields.io/badge/2015-12%20⭐-994900?style=flat-square"></img></a>
 <!--[[[end]]]-->
+</p>
 
 My solutions for the annual [Advent of Code](https://adventofcode.com) puzzles.
