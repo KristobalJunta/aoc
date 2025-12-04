@@ -1,29 +1,30 @@
 name: Update stars badges in README
 
-on: push
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
 
 jobs:
   update-stars:
     runs-on: ubuntu-latest
 
     permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
       contents: write
 
     steps:
       - name: Check out the repository
         uses: actions/checkout@v5
-        with:
-          ref: ${{ github.head_ref }}
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v6
         with:
           python-version: '3.x'
+          cache: 'pip'
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Update README
-        run: mdup -i README.md -o - | sed -e '/`/d' > README.md
+        run: cog -r README.md
         env:
           AOC_SESSION: ${{ secrets.AOC_SESSION }}
           AOC_UID: ${{ secrets.AOC_UID }}

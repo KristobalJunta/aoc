@@ -55,7 +55,7 @@ def get_year_stars(year: int) -> int:
         cookies={"session": SID},
     )
     assert res.status_code == 200
-    time.sleep(args.sleep_sec)
+    time.sleep(0.1)
 
     data = json.loads(res.text)
 
@@ -67,8 +67,7 @@ def get_year_badge_url(year: int, stars: int) -> str:
     color = hsv_interp(stars / total_stars)
 
     badge = f'<img src="{fmt_year_badge(year,stars, color)}"></img>'
-    if args.link_to_dir:
-        badge = f'<a href="./{year}">{badge}</a>'
+    badge = f'<a href="./{year}">{badge}</a>'
 
     return badge
 
@@ -77,40 +76,17 @@ def get_total_badge_url(stars: int) -> str:
     return f'<a href="./README.md"><img src="{fmt_total_badge(stars, "3e3e3e")}"></img></a>'
 
 
-def main():
+def gen_badge_links() -> str:
+    links = []
     y2s = {y: get_year_stars(y) for y in YEARS}
 
-    if args.total_only:
-        print(get_total_badge_url(sum(y2s.values())))
-    else:
-        for y, s in y2s.items():
-            print(get_year_badge_url(y, s))
+    for y, s in y2s.items():
+        link = get_year_badge_url(y, s)
+        links.append(link)
+
+    return links
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="""
-        Generate badge URLs with stars/year.
-        The badge color is interpolated with respect to the number of stars: from 0 to 50.
-        """.strip(),
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    parser.add_argument(
-        "--sleep-sec",
-        type=int,
-        default=0.1,
-        help="Number of seconds to sleep between requests.",
-    )
-    parser.add_argument(
-        "--link-to-dir",
-        action="store_true",
-        help="If given, will link the badge to the corresponding `./<year>` directory.",
-    )
-    parser.add_argument(
-        "--total-only",
-        action="store_true",
-        help="Just generate the total number of stars",
-    )
-    args = parser.parse_args()
-
-    main()
+    for link in gen_badge_links():
+        print(link)
