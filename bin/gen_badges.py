@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 
 """
-Generate README badges with the number of stars per year.
-
-Code from https://github.com/alexandru-dinu/advent-of-code/blob/main/.scripts/gen_badges.py
-See https://www.reddit.com/r/adventofcode/comments/zcngfk/generate_readme_badges_with_the_number_of_stars/
+Script to generate star count badges for README.md
+Fork of https://github.com/alexandru-dinu/programming-challenges/blob/main/advent-of-code/.scripts/gen_badges.py
 """
 
 import argparse
+import colorsys
 import json
-import math
 import os
 import time
-from datetime import datetime
 
 import requests
 
@@ -22,88 +19,74 @@ def rgb2hex(r, g, b):
     return f"{f(r):02x}{f(g):02x}{f(b):02x}"
 
 
-def hex2rgb(x):
-    return (int(x[:2], 16) / 255, int(x[2:4], 16) / 255, int(x[4:], 16) / 255)
+def hsv_interp(t):
+    # 0 - 60 - 120
+    assert 0 <= t <= 1
+    return rgb2hex(*colorsys.hsv_to_rgb(h=t * 120 / 360, s=1, v=0.6))
 
 
-def interp(c0, c1, t):
-    x0 = hex2rgb(c0)
-    x1 = hex2rgb(c1)
-    return rgb2hex(*[(1 - t) * x0[i] + t * x1[i] for i in range(3)])
-
-
-# value of the "session" cookie from adventofcode.com
+# cookie session (see browser tools)
 SID = os.getenv("AOC_SESSION")
-# personal ID ("user #..." in AOC Settings)
-UID = os.getenv("AOC_UID")
-
 assert SID is not None
+
+# personal ID (see in AOC Settings)
+UID = os.getenv("AOC_UID")
 assert UID is not None
 
-AOC_URL = "https://adventofcode.com/{year}/leaderboard/private/view/{uid}.json"
 USER_AGENT = "https://github.com/KristobalJunta/aoc/blob/master/bin/gen_badges.py"
-MD_BADGE_URL = "https://img.shields.io/badge/{year}-{stars}%20stars-{color}"
+AOC_URL = "https://adventofcode.com/{year}/leaderboard/private/view/{uid}.json"
+STAR = "⭐"
+YEARS = list(range(2025, 2014, -1))
+NUM_YEARS = len(YEARS)
 
 
-def get_badge_urls():
-    out = []
+def fmt_year_badge(year: int, stars: int, color: str) -> str:
+    return f"https://img.shields.io/badge/{year}-{stars}%20{STAR}-{color}?style=flat-square"
 
-    for year in args.years:
-        res = requests.get(
-            AOC_URL.format(year=year, uid=UID),
-            headers={"User-Agent": USER_AGENT},
-            cookies={"session": SID},
-        )
-        assert res.status_code == 200
-        time.sleep(args.sleep_sec)
 
-        data = json.loads(res.text)
+def fmt_total_badge(stars: int, color: str) -> str:
+    return f"https://img.shields.io/badge/total-{stars}%20{STAR}-{color}?style=for-the-badge"
 
-        s = data["members"][UID]["stars"]
 
-        t = math.sqrt(s / 50)  # sqrt(x) > x, for x in [0, 1], so we get to green faster
-        color = interp(args.color0, args.color1, t)
+def get_year_stars(year: int) -> int:
+    res = requests.get(
+        AOC_URL.format(year=year, uid=UID),
+        headers={"User-Agent": USER_AGENT},
+        cookies={"session": SID},
+    )
+    assert res.status_code == 200
+    time.sleep(0.1)
 
-        badge = (
-            f'<img src="{MD_BADGE_URL.format(year=year, stars=s, color=color)}"></img>'
-        )
-        if args.link_to_dir:
-            badge = f'<a href="./{year}">{badge}</a>'
+    data = json.loads(res.text)
 
-        out.append(badge)
+    return data["members"][UID]["stars"]
 
-    return out
+
+def get_year_badge_url(year: int, stars: int) -> str:
+    total_stars = 50 if year < 2025 else 24
+    color = hsv_interp(stars / total_stars)
+
+    badge = f'<img src="{fmt_year_badge(year,stars, color)}"></img>'
+    badge = f'<a href="./{year}">{badge}</a>'
+
+    return badge
+
+
+def get_total_badge_url(stars: int) -> str:
+    return f'<a href="./README.md"><img src="{fmt_total_badge(stars, "3e3e3e")}"></img></a>'
+
+
+def gen_badge_links() -> str:
+    links = []
+    y2s = {y: get_year_stars(y) for y in YEARS}
+
+    for y, s in y2s.items():
+        link = get_year_badge_url(y, s)
+        links.append(link)
+
+    return links
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="""
-        Generate badge URLs with stars/year.
-        The badge color is interpolated with respect to the number of stars: from 0 to 50.
-        """.strip(),
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-    )
-    parser.add_argument("--color0", type=str, default="ef0f14", help="Start color.")
-    parser.add_argument("--color1", type=str, default="239323", help="End color.")
-    parser.add_argument(
-        "--years",
-        nargs="+",
-        type=int,
-        default=list(range(datetime.now().year, 2014, -1)),
-        help="Years to fetch data from.",
-    )
-    parser.add_argument(
-        "--sleep-sec",
-        type=int,
-        default=1,
-        help="Number of seconds to sleep between requests.",
-    )
-    parser.add_argument(
-        "--link-to-dir",
-        action="store_true",
-        help="If given, will link the badge to the corresponding `./<year>` directory.",
-    )
-    args = parser.parse_args()
-
-    for url in get_badge_urls():
-        print(url)
+    for link in gen_badge_links():
+        print(link)

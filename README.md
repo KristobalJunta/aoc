@@ -2,7 +2,7 @@
 
 <!--[[[cog
     import cog
-    import bin.gen_badges2 as g
+    import bin.gen_badges as g
     for link in g.gen_badge_links():
         cog.outl(link)
 ]]]-->
