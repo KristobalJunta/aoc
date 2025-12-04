@@ -1,4 +1,4 @@
-<h1 align="center"> 🎄 Advent of Code </h1>
+<h1 align="center"> 🎄 Advent of Code 🎄 </h1>
 
 <p align="center">
 <!--[[[cog
