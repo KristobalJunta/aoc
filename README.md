@@ -6,7 +6,7 @@
     for link in g.gen_badge_links():
         cog.outl(link)
 ]]]-->
-<a href="./2025"><img src="https://img.shields.io/badge/2025-6%20⭐-994c00?style=flat-square"></img></a>
+<a href="./2025"><img src="https://img.shields.io/badge/2025-8%20⭐-996600?style=flat-square"></img></a>
 <a href="./2024"><img src="https://img.shields.io/badge/2024-4%20⭐-991800?style=flat-square"></img></a>
 <a href="./2023"><img src="https://img.shields.io/badge/2023-4%20⭐-991800?style=flat-square"></img></a>
 <a href="./2022"><img src="https://img.shields.io/badge/2022-12%20⭐-994900?style=flat-square"></img></a>
